@@ -13,7 +13,7 @@ export class AppService {
   };
 
   getUser(user: string): Promise<any> {
-    const userUrl = this.env.get<string>('https://api.github.com/users');
+    const userUrl = 'https://api.github.com/users';
     return lastValueFrom(
       this.http.get<any>(`${userUrl}/${user}`, { headers: this.header }).pipe(
         map((res) => res.data),
@@ -27,7 +27,7 @@ export class AppService {
   }
 
   getRepos(user: string): Promise<any> {
-    const userUrl = this.env.get<string>('https://api.github.com/users');
+    const userUrl = 'https://api.github.com/users';
     return lastValueFrom(
       this.http
         .get<any>(`${userUrl}/${user}/repos`, { headers: this.header })
@@ -43,7 +43,7 @@ export class AppService {
   }
 
   getBranches(user: string, repo: string): Promise<any> {
-    const branchUrl = this.env.get<string>('https://api.github.com/repos');
+    const branchUrl = 'https://api.github.com/repos';
     return lastValueFrom(
       this.http
         .get<any>(`${branchUrl}/${user}/${repo}/branches`, {
@@ -61,7 +61,7 @@ export class AppService {
   }
 
   getCommits(user: string, repo: string, branch: string): Promise<any> {
-    const commitUrl = this.env.get<string>('https://api.github.com/repos');
+    const commitUrl = 'https://api.github.com/repos';
     return lastValueFrom(
       this.http
         .get<any>(`${commitUrl}/${user}/${repo}/commits?sha=${branch}`, {
