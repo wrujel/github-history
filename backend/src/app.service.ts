@@ -9,7 +9,7 @@ export class AppService {
 
   bearerToken = this.env.get<string>('API_TOKEN');
   header = {
-    Authorization: `Basic ${this.bearerToken}`,
+    Authorization: `Bearer ${this.bearerToken}`,
   };
 
   getUser(user: string): Promise<any> {
@@ -73,8 +73,10 @@ export class AppService {
             commits: commits.map((commit) => {
               return {
                 sha: commit['sha'].slice(0, 7),
+                html_url: commit['html_url'],
                 author: commit['author'].login,
                 avatar_url: commit['author'].avatar_url,
+                author_url: commit['author'].html_url,
                 date: commit['commit'].author.date,
                 message: commit['commit'].message,
               };

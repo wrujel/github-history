@@ -27,7 +27,7 @@ export class AppController {
   @Header('Content-Type', 'application/json')
   public async getRepoData(@Body('user') user: string): Promise<any> {
     const reposData = await this.appService.getRepos(user);
-    return reposData;
+    return { ...reposData, info: 'succeed' };
   }
 
   @Post('api/branches')
@@ -36,8 +36,12 @@ export class AppController {
     @Body('user') user: string,
     @Body('repo') repo: string,
   ): Promise<any> {
-    const branchesData = await this.appService.getBranches(user, repo);
-    return branchesData;
+    if (user !== undefined && repo !== undefined) {
+      const branchesData = await this.appService.getBranches(user, repo);
+      return { ...branchesData, info: 'succeed' };
+    } else {
+      return { info: 'failed' };
+    }
   }
 
   @Post('api/commits')
@@ -47,8 +51,12 @@ export class AppController {
     @Body('repo') repo: string,
     @Body('branch') branch: string,
   ): Promise<any> {
-    const commitsData = await this.appService.getCommits(user, repo, branch);
-    return commitsData;
+    if (user !== undefined && repo !== undefined && branch !== undefined) {
+      const commitsData = await this.appService.getCommits(user, repo, branch);
+      return { ...commitsData, info: 'succeed' };
+    } else {
+      return { info: 'failed' };
+    }
   }
 
   @Post('api/data')
@@ -58,10 +66,20 @@ export class AppController {
     @Body('repo') repo: string,
     @Body('branch') branch: string,
   ): Promise<any> {
-    const userData = await this.appService.getUser(user);
-    const reposData = await this.appService.getRepos(user);
-    const branchesData = await this.appService.getBranches(user, repo);
-    const commitsData = await this.appService.getCommits(user, repo, branch);
-    return { ...userData, ...reposData, ...branchesData, ...commitsData };
+    if (user !== undefined && repo !== undefined && branch !== undefined) {
+      const userData = await this.appService.getUser(user);
+      const reposData = await this.appService.getRepos(user);
+      const branchesData = await this.appService.getBranches(user, repo);
+      const commitsData = await this.appService.getCommits(user, repo, branch);
+      return {
+        ...userData,
+        ...reposData,
+        ...branchesData,
+        ...commitsData,
+        info: 'succeed',
+      };
+    } else {
+      return { info: 'failed' };
+    }
   }
 }
