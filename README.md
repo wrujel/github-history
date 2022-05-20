@@ -63,7 +63,8 @@ We need now to get a personal token from your github account.
 4) Type a note and click on `public repo`.
 5) Click on Generate token.
 6) Then copy token generated that start with `ghp_`.
-7) Copy in file `.env`, after variable `API_TOKEN=`.
+7) Create a new file name `.env` in folder `github-history/backend/`
+8) Paste token in file `.env`, after variable `API_TOKEN=`.
 
 ### Running server
 Commands to run backend server, use `start:dev` if you want to automatically reset server after saving changes.
