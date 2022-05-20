@@ -61,6 +61,8 @@
 }
 
 .lista {
+  width: 900px;
+  min-width: 600px;
   list-style: none;
   line-height: 1.25;
   border-color: #444c56;

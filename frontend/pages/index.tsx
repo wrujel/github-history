@@ -1,18 +1,9 @@
-import { format, formatDistanceToNow, parseJSON } from "date-fns";
+import { formatDistanceToNow, parseJSON } from "date-fns";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
-
-interface IData {
-  name: string;
-  avatar_url: string;
-  html_url: string;
-  repos: [];
-  branches: [];
-  commits: [];
-}
 
 const Home: NextPage = () => {
   const [user, setUser] = useState("wrujel");
@@ -20,8 +11,8 @@ const Home: NextPage = () => {
   const [repos, setRepos] = useState([]);
   const [branch, setBranch] = useState("main");
   const [branches, setBranches] = useState([]);
+  const [commits, setCommits] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<IData>();
   const [loadCommit, setLoadCommit] = useState(false);
   const [loadRepo, setLoadRepo] = useState(false);
   const [loadBranch, setLoadBranch] = useState(false);
@@ -31,9 +22,9 @@ const Home: NextPage = () => {
   useEffect(() => {
     getData().then((res) => {
       if (res.info === "succeed") {
-        setData(res);
         setRepos(res.repos);
         setBranches(res.branches);
+        setCommits(res.commits);
         setLoading(false);
       } else {
         alert("No se pudo establecer conexion con el servidor.");
@@ -41,7 +32,18 @@ const Home: NextPage = () => {
     });
   }, []);
 
-  useEffect(() => {}, [repos, branches, data]);
+  useEffect(() => {}, [repos, branches, commits]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getCommits().then((res) => {
+        if (res.info === "succeed") {
+          setCommits(res.commits);
+        }
+      });
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [commits]);
 
   useEffect(() => {
     if (loadRepo === true) {
@@ -73,11 +75,9 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (loadData === true) {
-      getData().then((res) => {
+      getCommits().then((res) => {
         if (res.info === "succeed") {
-          setData(res);
-          setRepos(res.repos);
-          setBranches(res.branches);
+          setCommits(res.commits);
           setLoadData(false);
           setLoadCommit(false);
         }
@@ -129,21 +129,26 @@ const Home: NextPage = () => {
       });
   }
 
+  async function getCommits() {
+    return await fetch("http://localhost:8080/api/commits", {
+      method: "POST",
+      body: JSON.stringify({ user: user, repo: repo, branch: branch }),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   function clsValues() {
     setBranch("");
     setRepo("");
     setRepos([]);
     setBranches([]);
-    setData(() => {
-      return {
-        name: "",
-        avatar_url: "",
-        html_url: "",
-        repos: [],
-        branches: [],
-        commits: [],
-      };
-    });
+    setCommits([]);
   }
 
   return (
@@ -318,7 +323,7 @@ const Home: NextPage = () => {
           {!loadCommit ? (
             <div className={styles.listaContainer}>
               <ol className={styles.lista}>
-                {data?.commits?.map(
+                {commits?.map(
                   ({
                     sha,
                     html_url,
