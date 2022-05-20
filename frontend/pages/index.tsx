@@ -5,6 +5,13 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+
+/**
+ * Home Page
+ * render by default
+ *
+ */
 const Home: NextPage = () => {
   const [user, setUser] = useState("wrujel");
   const [repo, setRepo] = useState("github-history");
@@ -19,6 +26,10 @@ const Home: NextPage = () => {
   const [loadBranches, setLoadBranches] = useState(false);
   const [loadData, setLoadData] = useState(false);
 
+  /**
+   * This function get all data on first render
+   *
+   */
   useEffect(() => {
     getData().then((res) => {
       if (res.info === "succeed") {
@@ -32,8 +43,18 @@ const Home: NextPage = () => {
     });
   }, []);
 
+  /**
+   * Rerender page everytime there is a change in
+   * repositories, branches and commits
+   *
+   */
   useEffect(() => {}, [repos, branches, commits]);
 
+  /**
+   * Rerender page and get commits from server
+   * every 5000 ms = 5 seconds
+   *
+   */
   useEffect(() => {
     const interval = setInterval(() => {
       getCommits().then((res) => {
@@ -45,6 +66,12 @@ const Home: NextPage = () => {
     return () => clearInterval(interval);
   }, [commits]);
 
+  /**
+   * Rerender page when loadRepo change and
+   * get repositories if true
+   *
+   * @param loadRepo flag to load new repositories
+   */
   useEffect(() => {
     if (loadRepo === true) {
       clsValues();
@@ -59,6 +86,12 @@ const Home: NextPage = () => {
     }
   }, [loadRepo]);
 
+  /**
+   * Rerender page when loadBranches change and
+   * get branches if true
+   *
+   * @param loadBranches flag to load new branches
+   */
   useEffect(() => {
     if (loadBranches === true) {
       getBranches().then((res) => {
@@ -73,6 +106,12 @@ const Home: NextPage = () => {
     }
   }, [loadBranches]);
 
+  /**
+   * Rerender page when loadData change and
+   * get commits if true
+   *
+   * @param loadData flag to load new commits
+   */
   useEffect(() => {
     if (loadData === true) {
       getCommits().then((res) => {
@@ -85,8 +124,17 @@ const Home: NextPage = () => {
     }
   }, [loadData]);
 
+  /**
+   * This function fecth all data from server:
+   * repositories, branches and commits
+   *
+   * @param user github username
+   * @param repo github repository
+   * @param branch github branch
+   * @returns a json with all data
+   */
   async function getData() {
-    return await fetch("http://localhost:8080/api/data", {
+    return await fetch(`${serverUrl}/api/data`, {
       method: "POST",
       body: JSON.stringify({ user: user, repo: repo, branch: branch }),
       headers: { "Content-Type": "application/json" },
@@ -99,8 +147,14 @@ const Home: NextPage = () => {
       });
   }
 
+  /**
+   * Function that fetch repositories data from server
+   *
+   * @param user github username
+   * @returns an array with all repositories of a user
+   */
   async function getRepos() {
-    return await fetch("http://localhost:8080/api/repos", {
+    return await fetch(`${serverUrl}/api/repos`, {
       method: "POST",
       body: JSON.stringify({ user: user }),
       headers: { "Content-Type": "application/json" },
@@ -114,8 +168,15 @@ const Home: NextPage = () => {
       });
   }
 
+  /**
+   * Function that fecth branches data from server
+   *
+   * @param user github username
+   * @param repo github repository
+   * @returns an array with all branches of a repository
+   */
   async function getBranches() {
-    return await fetch("http://localhost:8080/api/branches", {
+    return await fetch(`${serverUrl}/api/branches`, {
       method: "POST",
       body: JSON.stringify({ user: user, repo: repo }),
       headers: { "Content-Type": "application/json" },
@@ -129,8 +190,16 @@ const Home: NextPage = () => {
       });
   }
 
+  /**
+   * Function that fecth commits data from server
+   *
+   * @param user github username
+   * @param repo github repository
+   * @param branch github branch
+   * @returns a json with all commits of branch
+   */
   async function getCommits() {
-    return await fetch("http://localhost:8080/api/commits", {
+    return await fetch(`${serverUrl}/api/commits`, {
       method: "POST",
       body: JSON.stringify({ user: user, repo: repo, branch: branch }),
       headers: { "Content-Type": "application/json" },
@@ -143,6 +212,11 @@ const Home: NextPage = () => {
       });
   }
 
+  /**
+   * Function that clean repositories, branches
+   * and commits variables
+   *
+   */
   function clsValues() {
     setBranch("");
     setRepo("");
