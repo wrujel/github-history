@@ -123,4 +123,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 # Try Demo
 
-Open link with your browser to see demo.
+The project is deployed with Vercel.
+
+Open this link with your browser to see demo.
+
+https://github-history.vercel.app/
