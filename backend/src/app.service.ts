@@ -71,15 +71,22 @@ export class AppService {
           map((res) => res.data),
           map((commits) => ({
             commits: commits.map((commit) => {
-              return {
+              const response = {
                 sha: commit['sha'].slice(0, 7),
                 html_url: commit['html_url'],
-                author: commit['author'].login,
-                avatar_url: commit['author'].avatar_url,
-                author_url: commit['author'].html_url,
                 date: commit['commit'].author.date,
                 message: commit['commit'].message,
               };
+              if (commit['author'] !== null) {
+                return {
+                  ...response,
+                  author: commit['author'].login,
+                  avatar_url: commit['author'].avatar_url,
+                  author_url: commit['author'].html_url,
+                };
+              } else {
+                return response;
+              }
             }),
           })),
         ),
