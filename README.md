@@ -27,6 +27,12 @@
       alt="Deployed on Vercel"
     />
   </a>
+  <a href="https://railway.app/">
+    <img 
+      src="https://img.shields.io/badge/Railway-API Deployed-success.svg?style=flat&logo=railway" 
+      alt="Deployed on Railway"
+    />
+  </a>
   <a href="https://nextjs.org/">
     <img 
       src="https://img.shields.io/badge/Next.js-12.0.0+-blue.svg?style=flat&logo=next.js" 
@@ -86,8 +92,7 @@
       src="https://img.shields.io/badge/Swagger-4.4.0+-blue.svg?style=flat&logo=swagger" 
       alt="Swagger version" 
     />
-  </a>
-
+  </a>  
 </div>
 <br />
 
@@ -118,7 +123,8 @@ This app will show you a list of all commits of a github repository. You can sea
 - [x] REST API was documented with Swagger.
 - [x] Frontend was developed with NextJS and consume data from backend.
 - [x] Frontend use Tailwind, a custom css loader and a dark theme.
-- [x] Build and deploy with Vercel.
+- [x] Frontend deployed with Vercel.
+- [x] Backend deployed with Railway.
 - [x] Typescript was used in backend and frontend. 
 
 # Tech Stack
@@ -133,6 +139,7 @@ This app will show you a list of all commits of a github repository. You can sea
 - [Vercel](https://vercel.com/) 
 - [Github API](https://docs.github.com/en/rest)
 - [Date-fns](https://date-fns.org/) 
+- [Railway](https://railway.app/)
           
 # Getting Started
 This is a mono repository project that is divided in two parts, the backend and the frontend. The backend is developed with [NestJS](https://nestjs.com/) and the frontend with [NextJS](https://nextjs.org/).
