@@ -1,6 +1,6 @@
 .container {
   padding: 0 2rem;
-  min-width: 900px;
+  min-width: 800px;
 }
 
 .main {
@@ -9,7 +9,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: top;
   align-items: center;
 }
 
@@ -39,6 +39,7 @@
   border: none;
   vertical-align: middle;
   flex-grow: 1;
+  max-width: 200px;
 }
 
 .searchButton {
@@ -297,27 +298,39 @@
   }
 }
 
-.section-center-loading {
-  background-color: #22272e;
+.section-center-loading-l {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100vw;
-  height: 100vh;
+  width: auto;
+  height: auto;
   padding: 4rem 12rem;
 }
 
-.sk-chase {
+.section-center-loading-sm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin-right: 10px;
+}
+
+.sk-chase-l {
   width: 80px;
   height: 80px;
   position: relative;
   animation: sk-chase 2.5s infinite linear both;
 }
 
-.sk-chase[data-visible="false"] {
-  margin-top: 50px;
-  width: 50px;
-  height: 50px;
+.sk-chase-sm {
+  margin: 0;
+  padding: 0;
+  width: 18px;
+  height: 18px;
+  position: relative;
+  animation: sk-chase 2.5s infinite linear both;
 }
 
 .sk-chase-dot {
