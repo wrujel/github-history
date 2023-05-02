@@ -1,0 +1,147 @@
+.listaContainer {
+  margin-top: 40px;
+  width: 100%;
+}
+
+.lista {
+  width: 100%;
+  min-width: 300px;
+  list-style: none;
+  line-height: 1.25;
+  border-color: #444c56;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 6px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  color: #768390;
+  word-wrap: break-word;
+  font-size: 18px;
+  padding: 0;
+  margin: 0;
+}
+
+.commit {
+  border-top-color: transparent;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  padding: 15px 30px;
+  margin-top: 0;
+  border-top-width: 1px;
+  line-height: 1.25;
+  color: #768390;
+  word-wrap: break-word;
+  display: flex;
+  border-bottom: 1px solid #444c56;
+}
+
+.commit:last-child {
+  border-bottom: 0px;
+}
+
+.details {
+  flex: auto;
+}
+
+.message {
+  margin-bottom: 4px;
+  margin-top: 0;
+  box-sizing: border-box;
+  display: block;
+  margin-block-end: 0.6em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+.messageText {
+  font-weight: 600 !important;
+  color: #adbac7 !important;
+  transition: 80ms cubic-bezier(0.33, 1, 0.68, 1);
+  transition-property: color, background-color, box-shadow, border-color;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.messageText:hover {
+  color: #539bf5 !important;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.info {
+  display: flex !important;
+  margin-top: 4px !important;
+  align-items: center !important;
+  box-sizing: border-box;
+  list-style-type: none;
+}
+
+.avatar {
+  position: relative;
+  min-width: 26px;
+  height: 20px;
+  align-self: flex-start !important;
+  box-sizing: border-box;
+  display: block;
+}
+
+.avatarBody {
+  background-color: transparent;
+  position: absolute;
+  display: flex;
+  background: #22272e;
+}
+
+.avatarUser {
+  width: 20px;
+  height: 20px;
+  z-index: 1;
+  border-right: 0;
+  position: relative;
+  display: flex;
+  box-sizing: content-box;
+  margin-right: -11px;
+  background-color: #22272e;
+  box-shadow: none;
+  transition: margin 0.1s ease-in-out;
+  border-radius: 50% !important;
+  overflow: hidden;
+  line-height: 1;
+  vertical-align: middle;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.infoText {
+  font-size: 14px !important;
+  min-width: 0 !important;
+  color: #768390 !important;
+}
+
+.author {
+  font-weight: 600;
+  color: #adbac7;
+  white-space: nowrap;
+  transition: 80ms cubic-bezier(0.33, 1, 0.68, 1);
+  transition-property: color;
+  text-decoration: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.author:hover {
+  text-decoration: underline;
+}
+
+.noCommits {
+  padding: 15px 30px;
+  margin-top: 0;
+  line-height: 1.25;
+  color: #768390;
+  word-wrap: break-word;
+  display: flex;
+  justify-content: center;
+}

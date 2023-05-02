@@ -1,0 +1,11 @@
+.searchButton {
+  vertical-align: middle;
+  display: inline-block;
+  cursor: pointer;
+  transition: color 0.25s;
+  margin-right: 15px;
+}
+
+.icon {
+  color: #adbac7;
+}

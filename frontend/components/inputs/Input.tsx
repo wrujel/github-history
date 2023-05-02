@@ -1,5 +1,5 @@
 import SearchButton from "../SearchButton";
-import styles from "../../styles/Home.module.css";
+import styles from "../../styles/Input.module.css";
 
 interface InputProps {
   id: string;

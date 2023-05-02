@@ -1,4 +1,4 @@
-import styles from "../styles/Home.module.css";
+import styles from "../styles/Commit.module.css";
 import Image from "next/image";
 import { formatDistanceToNow, parseJSON } from "date-fns";
 
@@ -56,7 +56,7 @@ const Commit: React.FC<CommitProps> = ({ commits, loadCommit }) => {
                               {author}
                             </a>
                             &nbsp;committed&nbsp;
-                            <span className={styles.date}>
+                            <span>
                               {formatDistanceToNow(parseJSON(date), {
                                 addSuffix: true,
                               })}

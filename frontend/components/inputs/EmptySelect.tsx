@@ -1,4 +1,4 @@
-import styles from "../../styles/Home.module.css";
+import styles from "../../styles/Input.module.css";
 import Loader from "../Loader";
 
 interface EmptySelectProps {

@@ -1,0 +1,28 @@
+.label {
+  font-size: 14px !important;
+  min-width: 0 !important;
+  color: #768390 !important;
+}
+
+.searchContainer {
+  background-color: #373e47;
+  border: 1px solid rgba(205, 217, 229, 0.1);
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  border-radius: 2px;
+  padding: 0;
+}
+
+.inputQuery,
+.inputQuery:focus {
+  background-color: #373e47;
+  color: #adbac7;
+  border: none;
+  vertical-align: middle;
+  flex-grow: 1;
+  max-width: 200px;
+}

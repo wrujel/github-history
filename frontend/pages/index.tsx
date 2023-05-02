@@ -102,7 +102,20 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>Github History App</h1>
-        <div className="flex mx-3 mb-2 mt-6">
+        <div
+          className="
+          mx-3 
+          mb-2 
+          mt-6
+          grid 
+          grid-cols-1 
+          sm:grid-cols-2 
+          md:grid-cols-3 
+          lg:grid-cols-3
+          xl:grid-cols-3
+          2xl:grid-cols-3
+        "
+        >
           <Input
             id="username"
             label="GITHUB USERNAME"

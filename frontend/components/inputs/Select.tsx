@@ -1,5 +1,5 @@
 import Arrow from "../Arrow";
-import styles from "../../styles/Home.module.css";
+import styles from "../../styles/Input.module.css";
 import EmptySelect from "./EmptySelect";
 
 interface SelectProps {
