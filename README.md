@@ -93,6 +93,12 @@
       alt="Swagger version" 
     />
   </a>  
+  <a href="https://react-hot-toast.com/">
+    <img 
+      src="https://img.shields.io/badge/React--Hot--Toast-1.0.0+-blue.svg?style=flat&logo=react-hot-toast" 
+      alt="React-Hot-Toast version" 
+    />
+  </a>
 </div>
 <br />
 
@@ -126,6 +132,7 @@ This app will show you a list of all commits of a github repository. You can sea
 - [x] Frontend deployed with Vercel.
 - [x] Backend deployed with Railway.
 - [x] Typescript was used in backend and frontend. 
+- [x] Use React-Hot-Toast to show notification messages.
 
 # Tech Stack
 - [NestJS](https://nestjs.com/)
@@ -140,6 +147,7 @@ This app will show you a list of all commits of a github repository. You can sea
 - [Github API](https://docs.github.com/en/rest)
 - [Date-fns](https://date-fns.org/) 
 - [Railway](https://railway.app/)
+- [React-Hot-Toast](https://react-hot-toast.com/)
           
 # Getting Started
 This is a mono repository project that is divided in two parts, the backend and the frontend. The backend is developed with [NestJS](https://nestjs.com/) and the frontend with [NextJS](https://nextjs.org/).
