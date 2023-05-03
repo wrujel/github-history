@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import getData from "../services/getData";
+import { toast } from "react-hot-toast";
 
 interface IParamsData {
   setUser: Dispatch<SetStateAction<string>>;
@@ -27,12 +28,15 @@ const useData = (params: IParamsData) => {
       setUser(user);
       setRepo(repo);
       setBranch(branch);
-      if (!response) return;
+      if (!response) {
+        toast.error("No data found");
+        return;
+      }
       setRepos(response.repos);
       setBranches(response.branches);
       setCommits(response.commits);
     } catch (error: any) {
-      throw new Error(error.message);
+      toast.error(error.message);
     } finally {
       setLoadData(false);
     }

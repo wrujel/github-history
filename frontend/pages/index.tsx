@@ -12,6 +12,7 @@ import Select from "../components/inputs/Select";
 import Commit from "../components/Commit";
 import debounce from "just-debounce-it";
 import useData from "../hooks/useData";
+import { Toaster } from "react-hot-toast";
 
 const Home: NextPage = () => {
   const { user, setUser } = useUser();
@@ -99,6 +100,7 @@ const Home: NextPage = () => {
           content="App that shows you git commit history of a github project"
         />
       </Head>
+      <Toaster />
 
       <main className={styles.main}>
         <h1 className={styles.title}>Github History App</h1>

@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import getRepos from "../services/getRepos";
+import { toast } from "react-hot-toast";
 
 const useRepos = (user: string) => {
   const [repo, setRepo] = useState("");
@@ -17,6 +18,7 @@ const useRepos = (user: string) => {
       previousUser.current = user;
       const response = await getRepos({ user });
       if (!response) {
+        toast.error("No repositories found");
         setRepos([]);
         setRepo("");
         return "";
@@ -25,7 +27,8 @@ const useRepos = (user: string) => {
       setRepo(response[0]);
       return response[0];
     } catch (error: any) {
-      throw new Error(error.message);
+      toast.error(error.message);
+      return "";
     } finally {
       setLoadRepo(false);
     }

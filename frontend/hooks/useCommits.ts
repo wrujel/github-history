@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from "react";
 import getCommits from "../services/getCommits";
+import { toast } from "react-hot-toast";
 
 const useCommits = (user: string, repo: string, branch: string) => {
   const [commits, setCommits] = useState([]);
@@ -26,12 +27,13 @@ const useCommits = (user: string, repo: string, branch: string) => {
         previousBranch.current = branch;
         const response = await getCommits({ user, repo, branch });
         if (!response) {
+          toast.error("No commits found");
           setCommits([]);
           return;
         }
         setCommits(response);
       } catch (error: any) {
-        throw new Error(error.message);
+        toast.error(error.message);
       } finally {
         setLoadCommit(false);
       }

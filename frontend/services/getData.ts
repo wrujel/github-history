@@ -1,3 +1,5 @@
+import { toast } from "react-hot-toast";
+
 interface IReposParams {
   user: string;
   repo: string;
@@ -25,10 +27,10 @@ export default async function getRepos(params: IReposParams) {
     });
     const data = await response.json();
 
-    if (!data) return null;
+    if (!data || data.statusCode === 500) return null;
 
     return data;
   } catch (error: any) {
-    throw new Error(error.message);
+    toast.error(error.message);
   }
 }

@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import getBranches from "../services/getBranches";
+import { toast } from "react-hot-toast";
 
 const useBranches = (user: string, repo: string) => {
   const [branch, setBranch] = useState("");
@@ -22,7 +23,9 @@ const useBranches = (user: string, repo: string) => {
       previousUser.current = user;
       previousRepo.current = repo;
       const response = await getBranches({ user, repo });
+
       if (!response) {
+        toast.error("No branches found");
         setBranches([]);
         setBranch("");
         return "";
@@ -31,7 +34,8 @@ const useBranches = (user: string, repo: string) => {
       setBranch(response[0]);
       return response[0];
     } catch (error: any) {
-      throw new Error(error.message);
+      toast.error(error.message);
+      return "";
     } finally {
       setLoadBranch(false);
     }
