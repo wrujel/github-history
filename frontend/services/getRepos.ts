@@ -13,7 +13,7 @@ interface IReposParams {
 export default async function getRepos(params: IReposParams) {
   try {
     const { user } = params;
-    let repos: string[] = [];
+    let repos = [];
 
     if (fetchMode === "client") {
       const rawData = await fetch(`${userUrl}/${user}/repos`, headers);
@@ -34,5 +34,6 @@ export default async function getRepos(params: IReposParams) {
     return repos;
   } catch (error: any) {
     toast.error(error.message);
+    return [];
   }
 }

@@ -17,7 +17,7 @@ interface IParams {
 export default async function getCommits(params: IParams) {
   try {
     const { user, repo, branch } = params;
-    let commits: string[] = [];
+    let commits = [];
 
     if (fetchMode === "client") {
       const rawData = await fetch(
@@ -58,5 +58,6 @@ export default async function getCommits(params: IParams) {
     return commits;
   } catch (error: any) {
     toast.error(error.message);
+    return [];
   }
 }

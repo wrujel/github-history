@@ -15,7 +15,7 @@ interface IParams {
 export default async function getBranches(params: IParams) {
   try {
     const { user, repo } = params;
-    let branches: string[] = [];
+    let branches = [];
 
     if (fetchMode === "client") {
       const rawData = await fetch(
@@ -34,10 +34,9 @@ export default async function getBranches(params: IParams) {
       branches = json?.branches;
     }
 
-    if (!branches) return null;
-
     return branches;
   } catch (error: any) {
     toast.error(error.message);
+    return [];
   }
 }

@@ -10,6 +10,12 @@ interface IParams {
   branch: string;
 }
 
+interface IData {
+  repos: string[];
+  branches: string[];
+  commits: string[];
+}
+
 /**
  * This function fetch all data from server:
  * repositories, branches and commits
@@ -18,18 +24,13 @@ interface IParams {
  * @param branch github branch
  * @returns a json with all data
  */
-export default async function getData(params: IParams) {
+export default async function getData(params: IParams): Promise<IData> {
+  let data: IData = { repos: [], branches: [], commits: [] };
   try {
     const { user, repo, branch } = params;
-    let data = {};
 
     if (fetchMode === "client") {
-      const response = await fetch(`${userUrl}/${user}`, headers);
-      const rawData = await response.json();
       data = {
-        name: rawData.name,
-        avatar_url: rawData.avatar_url,
-        html_url: rawData.html_url,
         repos: await getRepos({ user: user }),
         branches: await getBranches({ user: user, repo: repo }),
         commits: await getCommits({ user: user, repo: repo, branch: branch }),
@@ -43,10 +44,9 @@ export default async function getData(params: IParams) {
       data = await response.json();
     }
 
-    if (!data) return null;
-
     return data;
   } catch (error: any) {
     toast.error(error.message);
+    return { repos: [], branches: [], commits: [] };
   }
 }
