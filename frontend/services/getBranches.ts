@@ -1,11 +1,10 @@
 import { toast } from "react-hot-toast";
+import { serverUrl, fetchMode, reposUrl, headers } from "../utils/constants";
 
-interface IReposParams {
+interface IParams {
   user: string;
   repo: string;
 }
-
-const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8080";
 
 /**
  * Function that fetch branches data from server
@@ -13,18 +12,27 @@ const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8080";
  * @param repo github repository
  * @returns an array with all branches of a repository
  */
-export default async function getRepos(params: IReposParams) {
+export default async function getBranches(params: IParams) {
   try {
     const { user, repo } = params;
+    let branches: string[] = [];
 
-    const response = await fetch(`${serverUrl}/api/branches`, {
-      method: "POST",
-      body: JSON.stringify({ user: user, repo: repo }),
-      headers: { "Content-Type": "application/json" },
-    });
-    const json = await response.json();
-
-    const branches = json?.branches;
+    if (fetchMode === "client") {
+      const rawData = await fetch(
+        `${reposUrl}/${user}/${repo}/branches`,
+        headers
+      );
+      const data = await rawData.json();
+      branches = data.map((x: any) => x.name);
+    } else {
+      const response = await fetch(`${serverUrl}/api/branches`, {
+        method: "POST",
+        body: JSON.stringify({ user: user, repo: repo }),
+        headers: { "Content-Type": "application/json" },
+      });
+      const json = await response.json();
+      branches = json?.branches;
+    }
 
     if (!branches) return null;
 
