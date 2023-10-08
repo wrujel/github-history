@@ -11,9 +11,9 @@ interface IParams {
 }
 
 interface IData {
-  repos: string[];
-  branches: string[];
-  commits: string[];
+  repos: never[];
+  branches: never[];
+  commits: never[];
 }
 
 /**
@@ -43,10 +43,8 @@ export default async function getData(params: IParams): Promise<IData> {
       });
       data = await response.json();
     }
-
-    return data;
   } catch (error: any) {
     toast.error(error.message);
-    return { repos: [], branches: [], commits: [] };
   }
+  return data;
 }
