@@ -47,7 +47,8 @@ const Input: React.FC<InputProps> = ({
             border-gray-200 
             rounded 
             py-3 
-            px-4 
+            pr-12
+            pl-4
             leading-tight 
             focus:outline-none 
             focus:bg-white 

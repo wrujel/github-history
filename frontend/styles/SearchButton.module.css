@@ -1,9 +1,10 @@
 .searchButton {
   vertical-align: middle;
-  display: inline-block;
+  position: absolute;
+  inset: 0 0 0 auto;
+  padding: 0 15px;
   cursor: pointer;
   transition: color 0.25s;
-  margin-right: 15px;
 }
 
 .icon {
