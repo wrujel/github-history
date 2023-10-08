@@ -57,7 +57,7 @@ export default async function getCommits(params: IParams) {
 
     return commits;
   } catch (error: any) {
-    toast.error(error.message);
+    toast.error("No commits found");
     return [];
   }
 }

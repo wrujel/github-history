@@ -33,7 +33,7 @@ export default async function getRepos(params: IReposParams) {
 
     return repos;
   } catch (error: any) {
-    toast.error(error.message);
+    toast.error("No repositories found");
     return [];
   }
 }

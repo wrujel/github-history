@@ -36,7 +36,7 @@ export default async function getBranches(params: IParams) {
 
     return branches;
   } catch (error: any) {
-    toast.error(error.message);
+    toast.error("No branches found");
     return [];
   }
 }

@@ -44,7 +44,7 @@ export default async function getData(params: IParams): Promise<IData> {
       data = await response.json();
     }
   } catch (error: any) {
-    toast.error(error.message);
+    toast.error("No data found");
   }
   return data;
 }
