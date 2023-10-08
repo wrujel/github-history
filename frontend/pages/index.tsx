@@ -15,7 +15,7 @@ import useData from "../hooks/useData";
 import { Toaster } from "react-hot-toast";
 
 const Home: NextPage = () => {
-  const { user, setUser } = useUser();
+  const { user, setUser, validateUser, getUserData, loadUser } = useUser();
   const { getUserRepos, repo, setRepo, repos, setRepos, loadRepo } =
     useRepos(user);
   const {
@@ -55,9 +55,17 @@ const Home: NextPage = () => {
   const debouncedGetUserRepos = useMemo(
     () =>
       debounce(async (user: string) => {
-        const resRepo = await getUserRepos(user);
-        const resBranch = await getRepoBranches(user, resRepo);
-        getBranchCommits(user, resRepo, resBranch);
+        if (!validateUser(user)) return;
+        const foundUser = await getUserData(user);
+        if (foundUser) {
+          const resRepo = await getUserRepos(user);
+          const resBranch = await getRepoBranches(user, resRepo);
+          getBranchCommits(user, resRepo, resBranch);
+        } else {
+          setRepos([]);
+          setBranches([]);
+          setCommits([]);
+        }
       }, 500),
     []
   );
@@ -128,7 +136,7 @@ const Home: NextPage = () => {
           <Select
             id="repos"
             label="REPOSITORIES"
-            disabled={loadRepo || loadData}
+            disabled={loadUser || loadRepo || loadData}
             data={repos}
             option={repo}
             onChange={onChangeRepo}
@@ -136,7 +144,7 @@ const Home: NextPage = () => {
           <Select
             id="branches"
             label="BRANCHES"
-            disabled={loadBranch || loadRepo || loadData}
+            disabled={loadUser || loadBranch || loadRepo || loadData}
             data={branches}
             option={branch}
             onChange={onChangeBranch}
@@ -147,7 +155,9 @@ const Home: NextPage = () => {
         ) : (
           <Commit
             commits={commits}
-            loadCommit={loadCommit || loadRepo || loadBranch || loadData}
+            loadCommit={
+              loadUser || loadCommit || loadRepo || loadBranch || loadData
+            }
           />
         )}
       </main>
