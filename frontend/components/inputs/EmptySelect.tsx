@@ -52,7 +52,7 @@ const EmptySelect: React.FC<EmptySelectProps> = ({
           disabled={disabled}
         />
 
-        <Loader size="sm" />
+        <Loader size="sm" type="select" />
       </div>
     </div>
   );

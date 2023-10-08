@@ -17,6 +17,18 @@
   margin-right: 10px;
 }
 
+.section-center-loading-sm-select {
+  position: absolute;
+  inset: 0 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin-right: 10px;
+}
+
 .sk-chase-l {
   width: 80px;
   height: 80px;
