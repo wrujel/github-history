@@ -30,11 +30,13 @@ export default async function getData(params: IParams): Promise<IData> {
     const { user, repo, branch } = params;
 
     if (fetchMode === "client") {
-      data = {
-        repos: await getRepos({ user: user }),
-        branches: await getBranches({ user: user, repo: repo }),
-        commits: await getCommits({ user: user, repo: repo, branch: branch }),
-      };
+      // Fetch repos, branches and commits parallelly
+      const [repos, branches, commits] = await Promise.all([
+        getRepos({ user: user }),
+        getBranches({ user: user, repo: repo }),
+        getCommits({ user: user, repo: repo, branch: branch }),
+      ]);
+      data = { repos, branches, commits };
     } else {
       const response = await fetch(`${serverUrl}/api/data`, {
         method: "POST",
