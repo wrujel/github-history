@@ -19,7 +19,7 @@
 <div align='center'>
   <a href='/'>
     <img
-      src='/frontend/public/screenshot.png'
+      src='/images/screenshot.png'
       alt='Screenshot of the app'
       width='80%'
     />
