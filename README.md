@@ -10,7 +10,7 @@
 <div align='center'>
   <a href='/'>
     <img
-      src='/images/screenshot.png'
+      src='screenshot.webp'
       alt='Screenshot of the app'
       width='100%'
     />
@@ -40,7 +40,7 @@
 <div align='center'>
   A web app to browse the commit history of any GitHub user's repositories. Built with Next.js on the frontend and NestJS on the backend, it fetches data from the GitHub API and displays commits with author info, messages, and relative timestamps.
 
-  [Demo]({{DEMO_URL}}) · [Report issue](/issues) · [Suggest something](/issues)
+  [Demo][demo-link] · [Report issue](/issues) · [Suggest something](/issues)
 </div>
 
 ## Table of Contents
