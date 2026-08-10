@@ -1,0 +1,225 @@
+.label {
+  display: block;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  margin-bottom: 0.55rem;
+}
+
+.dropdown {
+  position: relative;
+  width: 100%;
+}
+
+/* ---------- Trigger ---------- */
+
+.trigger {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 0.7rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: rgba(7, 9, 13, 0.55);
+  color: var(--text);
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.22s var(--ease-out-expo),
+    box-shadow 0.22s var(--ease-out-expo),
+    background 0.22s var(--ease-out-expo);
+}
+
+.trigger:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.trigger:focus-visible,
+.trigger[aria-expanded="true"] {
+  outline: none;
+  border-color: rgba(124, 92, 255, 0.65);
+  background: rgba(13, 17, 23, 0.8);
+  box-shadow:
+    0 0 0 3px rgba(124, 92, 255, 0.18),
+    0 0 24px -4px rgba(124, 92, 255, 0.45);
+}
+
+.trigger:disabled {
+  cursor: default;
+  color: var(--text-muted);
+}
+
+.triggerValue {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chevron {
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+  color: var(--text-muted);
+  transition: transform 0.3s var(--ease-out-expo), color 0.2s var(--ease-out-expo);
+}
+
+.trigger:hover:not(:disabled) .chevron {
+  color: var(--violet);
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+  color: var(--violet);
+}
+
+/* ---------- Panel ---------- */
+
+.panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  margin: 0;
+  padding: 6px;
+  border-radius: 14px;
+  border: 1px solid rgba(124, 92, 255, 0.28);
+  background: rgba(11, 14, 19, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow:
+    0 24px 50px -16px rgba(0, 0, 0, 0.85),
+    0 0 30px -8px rgba(124, 92, 255, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transform-origin: top center;
+  overflow: hidden; /* clip children to the rounded corners */
+}
+
+/* the scrollable region lives below the fixed search row */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 232px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #2a3242 transparent;
+}
+
+/* slim, rounded scrollbar that respects the panel's corners */
+.list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background: #2a3242;
+  border: none;
+  border-radius: 6px;
+}
+
+.list::-webkit-scrollbar-thumb:hover {
+  background: rgba(124, 92, 255, 0.55);
+}
+
+/* ---------- Items ---------- */
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 9px;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition:
+    background 0.15s var(--ease-out-expo),
+    color 0.15s var(--ease-out-expo);
+}
+
+.item:hover {
+  background: rgba(124, 92, 255, 0.12);
+  color: var(--text);
+}
+
+.itemDot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid rgba(139, 147, 167, 0.4);
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.item:hover .itemDot {
+  border-color: var(--violet);
+}
+
+.itemActive {
+  color: var(--cyan);
+}
+
+.itemActive .itemDot {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  box-shadow: 0 0 8px 1px rgba(62, 230, 216, 0.55);
+}
+
+.itemText {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- Search row (fixed above the scrolling list) ---------- */
+
+.searchRow {
+  padding-bottom: 6px;
+}
+
+.search {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 9px;
+  border: 1px solid var(--glass-border);
+  background: rgba(7, 9, 13, 0.6);
+  color: var(--text);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.8rem;
+  outline: none;
+  caret-color: var(--cyan);
+  transition: border-color 0.2s var(--ease-out-expo), box-shadow 0.2s var(--ease-out-expo);
+}
+
+.search::placeholder {
+  color: rgba(139, 147, 167, 0.5);
+}
+
+.search:focus {
+  border-color: rgba(62, 230, 216, 0.5);
+  box-shadow: 0 0 0 3px rgba(62, 230, 216, 0.12);
+}
+
+.noMatch {
+  padding: 12px;
+  text-align: center;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}

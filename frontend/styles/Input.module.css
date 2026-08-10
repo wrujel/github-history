@@ -1,26 +1,63 @@
 .label {
-  font-size: 14px !important;
-  min-width: 0 !important;
-  color: #768390 !important;
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.18em !important;
+  color: var(--text-muted) !important;
+  margin-bottom: 0.55rem !important;
+  transition: color 0.2s var(--ease-out-expo);
 }
 
 .searchContainer {
-  background-color: #373e47;
-  border: 1px solid rgba(205, 217, 229, 0.1);
   position: relative;
   width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  border-radius: 2px;
+  margin: 0;
   padding: 0;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: rgba(7, 9, 13, 0.55);
+  transition:
+    border-color 0.22s var(--ease-out-expo),
+    box-shadow 0.22s var(--ease-out-expo),
+    background 0.22s var(--ease-out-expo);
+}
+
+.searchContainer:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.searchContainer:focus-within {
+  border-color: rgba(124, 92, 255, 0.65);
+  background: rgba(13, 17, 23, 0.8);
+  box-shadow:
+    0 0 0 3px rgba(124, 92, 255, 0.18),
+    0 0 24px -4px rgba(124, 92, 255, 0.45);
 }
 
 .inputQuery,
 .inputQuery:focus {
-  background-color: #373e47;
-  color: #adbac7;
+  background-color: transparent;
+  color: var(--text);
   border: none;
   vertical-align: middle;
   flex-grow: 1;
-  max-width: 200px;
+  width: 100%;
+  max-width: none;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 0.95rem;
+  caret-color: var(--cyan);
+}
+
+.inputQuery::placeholder {
+  color: rgba(139, 147, 167, 0.5);
+}
+
+/* native select glyph hidden; custom arrow sits on the right */
+select.inputQuery {
+  cursor: pointer;
+}
+
+select.inputQuery option {
+  background-color: var(--ink-2);
+  color: var(--text);
 }

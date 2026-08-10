@@ -1,0 +1,16 @@
+{
+  "name": "github-history",
+  "version": "1.0.0",
+  "description": "Github History App - run backend and frontend together",
+  "author": "wrujel",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "dev": "concurrently -k -n backend,frontend -c blue,green \"npm:dev:backend\" \"npm:dev:frontend\"",
+    "dev:backend": "npm --prefix backend run start:dev",
+    "dev:frontend": "npm --prefix frontend run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}

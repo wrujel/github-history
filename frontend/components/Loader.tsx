@@ -12,13 +12,12 @@ const Loader: React.FC<LoaderProps> = ({ size = "l", type }) => {
         styles[`section-center-loading-${size}${type ? "-" + type : ""}`]
       }
     >
-      <div className={styles[`sk-chase-${size}`]}>
-        <div className={styles["sk-chase-dot"]}></div>
-        <div className={styles["sk-chase-dot"]}></div>
-        <div className={styles["sk-chase-dot"]}></div>
-        <div className={styles["sk-chase-dot"]}></div>
-        <div className={styles["sk-chase-dot"]}></div>
-        <div className={styles["sk-chase-dot"]}></div>
+      <div className={styles[`pulse-${size}`]} aria-label="Loading">
+        <span className={styles.pulseNode} />
+        <span className={styles.pulseLink} />
+        <span className={styles.pulseNode} />
+        <span className={styles.pulseLink} />
+        <span className={styles.pulseNode} />
       </div>
     </div>
   );
