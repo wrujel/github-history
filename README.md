@@ -1,9 +1,9 @@
 <div align='center'>
 
-  [![demo][demo]][demo-link]
-  [![status][status]][status-link]
-  [![deploy][deploy]](/)
-  [![test][tests]][tests-link]
+[![demo][demo]][demo-link]
+[![status][status]][status-link]
+[![deploy][deploy]](/)
+[![test][tests]][tests-link]
 
 </div>
 
@@ -23,24 +23,26 @@
 
 <div align='center'>
 
-  [![Next.js][nextjs]][nextjs-link]
-  [![TypeScript][typescript]][typescript-link]
-  [![Tailwind CSS][tailwindcss]][tailwindcss-link]
-  [![React][react]][react-link]
-  [![NestJS][nestjs]][nestjs-link]
-  [![Swagger][swagger]][swagger-link]
-  [![Axios][axios]][axios-link]
-  [![Jest][jest]][jest-link]
-  [![Date-fns][date-fns]][date-fns-link]
-  [![React Hot Toast][react-hot-toast]][react-hot-toast-link]
-  [![Vercel][vercel]][vercel-link]
+[![Next.js][nextjs]][nextjs-link]
+[![TypeScript][typescript]][typescript-link]
+[![Tailwind CSS][tailwindcss]][tailwindcss-link]
+[![React][react]][react-link]
+[![Framer Motion][framer-motion]][framer-motion-link]
+[![NestJS][nestjs]][nestjs-link]
+[![Swagger][swagger]][swagger-link]
+[![Axios][axios]][axios-link]
+[![Jest][jest]][jest-link]
+[![Date-fns][date-fns]][date-fns-link]
+[![React Hot Toast][react-hot-toast]][react-hot-toast-link]
+[![Vercel][vercel]][vercel-link]
 
 </div>
 
 <div align='center'>
   A web app to browse the commit history of any GitHub user's repositories. Built with Next.js on the frontend and NestJS on the backend, it fetches data from the GitHub API and displays commits with author info, messages, and relative timestamps.
 
-  [Demo][demo-link] · [Report issue](/issues) · [Suggest something](/issues)
+[Demo][demo-link] · [Report issue](/issues) · [Suggest something](/issues)
+
 </div>
 
 ## Table of Contents
@@ -68,6 +70,9 @@
 - [x] Search GitHub users with debounced input
 - [x] Dual fetch mode: client-side (GitHub API) or server-side (NestJS backend)
 - [x] Swagger API documentation at `/api/docs`
+- [x] Motion-driven UI — masked line reveals, staggered card entrances and animated dropdowns
+- [x] Scroll-linked progress indicator on the commit list
+- [x] Single `npm run dev` at the root boots the API and the client together
 - [x] Responsive design with Tailwind CSS
 - [x] Toast notifications for errors and status updates
 - [x] Relative time display with date-fns
@@ -80,6 +85,7 @@
 - [React 18](https://react.dev/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
+- [Framer Motion](https://motion.dev/)
 - [NestJS](https://nestjs.com/)
 - [Axios](https://axios-http.com/)
 - [Swagger](https://swagger.io/)
@@ -87,13 +93,14 @@
 - [date-fns](https://date-fns.org/)
 - [react-hot-toast](https://react-hot-toast.com/)
 - [just-debounce-it](https://www.npmjs.com/package/just-debounce-it)
+- [concurrently](https://www.npmjs.com/package/concurrently)
 - [Vercel](https://vercel.com/)
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 16+
+- Node.js 18+
 - npm
 
 ### Installation
@@ -101,31 +108,29 @@
 ```bash
 git clone https://github.com/wrujel/github-history.git
 cd github-history
+npm install
 ```
 
-Install dependencies for both frontend and backend:
+Install dependencies for both workspaces:
 
 ```bash
-cd frontend
-npm install
-cd ../backend
-npm install
+npm --prefix backend install
+npm --prefix frontend install
 ```
 
 ### Running locally
 
-Start the backend server:
+From the repository root, start the backend and the frontend together:
 
 ```bash
-cd backend
-npm run start:dev
+npm run dev
 ```
 
-Start the frontend dev server:
+Or run them separately:
 
 ```bash
-cd frontend
-npm run dev
+npm --prefix backend run start:dev
+npm --prefix frontend run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -136,16 +141,23 @@ The backend API runs on [http://localhost:8080](http://localhost:8080).
 Frontend:
 
 ```bash
-cd frontend
-npm run build
+npm --prefix frontend run build
 ```
 
 Backend:
 
 ```bash
-cd backend
-npm run build
+npm --prefix backend run build
 ```
+
+| Command                             | Action                                   |
+| :---------------------------------- | :--------------------------------------- |
+| `npm run dev`                       | Runs backend and frontend concurrently   |
+| `npm run dev:backend`               | Starts only the NestJS API in watch mode |
+| `npm run dev:frontend`              | Starts only the Next.js dev server       |
+| `npm --prefix backend run test`     | Runs the backend unit tests              |
+| `npm --prefix backend run test:e2e` | Runs the backend e2e suite               |
+| `npm --prefix frontend run lint`    | Lints the frontend                       |
 
 ## Environment Variables
 
@@ -176,9 +188,14 @@ To run this project, you will need to add the following environment variables to
 ├── frontend/
 │   ├── components/
 │   │   ├── inputs/
-│   │   └── ...
+│   │   │   ├── Dropdown.tsx
+│   │   │   └── Input.tsx
+│   │   ├── Commit.tsx
+│   │   ├── Loader.tsx
+│   │   └── SearchButton.tsx
 │   ├── hooks/
 │   ├── pages/
+│   │   ├── _app.tsx
 │   │   └── index.tsx
 │   ├── services/
 │   ├── styles/
@@ -188,7 +205,7 @@ To run this project, you will need to add the following environment variables to
 │   ├── tailwind.config.js
 │   └── tsconfig.json
 ├── images/
-│   └── screenshot.png
+├── package.json
 └── LICENSE
 ```
 
@@ -228,10 +245,12 @@ This project is licensed under the [MIT License](LICENSE).
 ---
 
 <!-- Badges -->
+
 [nextjs]: https://img.shields.io/badge/Next.js-black?style=for-the-badge&logo=next.js
 [typescript]: https://img.shields.io/badge/Typescript-007ACC?style=for-the-badge&logo=typescript&logoColor=white&color=blue
 [tailwindcss]: https://img.shields.io/badge/Tailwind%20CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
 [react]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[framer-motion]: https://img.shields.io/badge/Framer%20Motion-2A2A2A?style=for-the-badge&logo=npm&logoColor=white
 [nestjs]: https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white
 [swagger]: https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black
 [axios]: https://img.shields.io/badge/Axios-671ddf?style=for-the-badge&logo=axios&logoColor=white
@@ -241,10 +260,12 @@ This project is licensed under the [MIT License](LICENSE).
 [vercel]: https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white
 
 <!-- Badge links -->
+
 [nextjs-link]: https://nextjs.org/
 [typescript-link]: https://www.typescriptlang.org/
 [tailwindcss-link]: https://tailwindcss.com/
 [react-link]: https://react.dev/
+[framer-motion-link]: https://motion.dev/
 [nestjs-link]: https://nestjs.com/
 [swagger-link]: https://swagger.io/
 [axios-link]: https://axios-http.com/
@@ -253,11 +274,12 @@ This project is licensed under the [MIT License](LICENSE).
 [react-hot-toast-link]: https://react-hot-toast.com/
 [vercel-link]: https://vercel.com/
 
-<!-- Status badges -->
-[demo]: https://img.shields.io/badge/🚀%20Live%20Demo-Visit-9cf?style=for-the-badge
-[demo-link]: https://github-history.vercel.app/
-[status]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwrujel%2Fmonitor-repos%2Fmain%2Fdata%2Fgithub-history.json&style=for-the-badge
+<!-- Status/Demo badges -->
+
+[demo]: https://img.shields.io/badge/🚀%20Live%20Demo-000000?style=for-the-badge&&logoColor=white&color=0a6bdb
 [status-link]: https://github.com/wrujel/monitor-repos
-[deploy]: https://img.shields.io/github/deployments/wrujel/github-history/production?style=for-the-badge&label=Deploy
-[tests]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwrujel%2Fmonitor-tests%2Fmain%2Fdata%2Fgithub-history.json&style=for-the-badge
 [tests-link]: https://github.com/wrujel/monitor-tests
+[demo-link]: https://github-history.vercel.app/
+[status]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwrujel%2Fmonitor-repos%2Fmain%2Fdata%2Fgithub-history.json
+[deploy]: https://img.shields.io/github/deployments/wrujel/github-history/production?style=for-the-badge&label=Deploy
+[tests]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwrujel%2Fmonitor-tests%2Fmain%2Fdata%2Fgithub-history.json
