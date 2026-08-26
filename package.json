@@ -5,6 +5,7 @@
   "author": "wrujel",
   "private": true,
   "license": "MIT",
+  "packageManager": "pnpm@11.22.0",
   "scripts": {
     "dev": "concurrently -k -n backend,frontend -c blue,green \"pnpm:dev:backend\" \"pnpm:dev:frontend\"",
     "dev:backend": "pnpm --dir backend run start:dev",

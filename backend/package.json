@@ -5,6 +5,7 @@
   "author": "wrujel",
   "private": true,
   "license": "MIT",
+  "packageManager": "pnpm@11.22.0",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",

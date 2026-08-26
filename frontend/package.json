@@ -4,6 +4,7 @@
   "description": "Github History App Client",
   "author": "wrujel",
   "private": true,
+  "packageManager": "pnpm@11.22.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
