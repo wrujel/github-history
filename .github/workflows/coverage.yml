@@ -38,9 +38,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Version comes from the root package.json "packageManager" pin —
+      # specifying it here too makes the action fail with a version conflict.
       - uses: pnpm/action-setup@v4
-        with:
-          version: 11
 
       - uses: actions/setup-node@v4
         with:
