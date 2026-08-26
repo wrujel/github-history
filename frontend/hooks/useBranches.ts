@@ -11,7 +11,7 @@ const useBranches = (user: string, repo: string) => {
 
   const getRepoBranches = async (
     user: string,
-    repo: string
+    repo: string,
   ): Promise<string> => {
     // If the user and repo are the same as the previous ones, return an empty string
     if (user === previousUser.current && repo === previousRepo.current)

@@ -49,7 +49,7 @@ const Home: NextPage = () => {
   const { getBranchCommits, commits, setCommits, loadCommit } = useCommits(
     user,
     repo,
-    branch
+    branch,
   );
   const { getDataCommits, loadData } = useData({
     setUser,
@@ -87,7 +87,7 @@ const Home: NextPage = () => {
           setCommits([]);
         }
       }, 500),
-    []
+    [],
   );
 
   // Incremented by every user-driven selection change; Commit uses it

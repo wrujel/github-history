@@ -20,7 +20,7 @@ export default async function getBranches(params: IParams) {
     if (fetchMode === "client") {
       const rawData = await fetch(
         `${reposUrl}/${user}/${repo}/branches`,
-        headers
+        headers,
       );
       const data = await rawData.json();
       branches = data.map((x: any) => x.name);

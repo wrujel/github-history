@@ -22,7 +22,7 @@ export default async function getCommits(params: IParams) {
     if (fetchMode === "client") {
       const rawData = await fetch(
         `${reposUrl}/${user}/${repo}/commits?sha=${branch}`,
-        headers
+        headers,
       );
       const data = await rawData.json();
       commits = data.map((x: any) => {

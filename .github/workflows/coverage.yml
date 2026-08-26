@@ -1,0 +1,77 @@
+# Unit tests + coverage, reported back to the Content Studio.
+#
+# The studio's scheduler dispatches this daily and then READS this run: its
+# conclusion becomes the project's "unit tests" tag, and the MONITOR_COVERAGE
+# line below becomes its "coverage %" tag and the shields badge in this README.
+# Nothing is committed here and no secret is needed — the studio reads the run's
+# log through the GitHub API.
+#
+# Scoped to the NestJS backend, which is where this repo's tests live. Its suite
+# is fully offline: HttpService is stubbed, so nothing here spends the
+# unauthenticated api.github.com quota (60/hour per IP) that CI runners share
+# and that used to make these tests fail for reasons unrelated to the code.
+name: Coverage
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# A newer run supersedes an in-flight one on the same ref — a daily dispatch
+# landing on top of a push must not queue behind it.
+concurrency:
+  group: coverage-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    name: Backend (NestJS)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: backend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # json-summary is what the studio parses; text-summary is for whoever
+      # opens the log.
+      - name: Run tests with coverage
+        run: pnpm exec vitest run --coverage --coverage.reporter=json-summary --coverage.reporter=text-summary --coverage.reporter=lcov
+
+      # `always()`: a failing suite still measured something, and the studio
+      # shows the red unit-tests tag NEXT TO a real percentage. Skipping this on
+      # failure would blank the badge exactly when it matters most.
+      #
+      # `::notice::` rather than a bare echo so the line survives as a run
+      # annotation after the log expires — the studio falls back to reading it
+      # that way.
+      - name: Report to the studio
+        if: always()
+        run: |
+          if [ -f coverage/coverage-summary.json ]; then
+            node -e '
+              const t = require("./coverage/coverage-summary.json").total.lines;
+              const out = { pct: t.pct, lines: { covered: t.covered, total: t.total } };
+              console.log("::notice title=coverage::MONITOR_COVERAGE " + JSON.stringify(out));
+            '
+          else
+            echo "::notice title=coverage::MONITOR_COVERAGE {\"pct\":null}"
+          fi

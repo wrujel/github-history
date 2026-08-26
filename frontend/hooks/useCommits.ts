@@ -38,7 +38,7 @@ const useCommits = (user: string, repo: string, branch: string) => {
         setLoadCommit(false);
       }
     },
-    []
+    [],
   );
 
   return { getBranchCommits, commits, setCommits, loadCommit, setLoadCommit };

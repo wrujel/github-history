@@ -46,7 +46,7 @@ const Commit: React.FC<CommitProps> = ({
       lastScrollToken = scrollToken;
       const top = el.getBoundingClientRect().top + window.scrollY - 90;
       const reduce = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
+        "(prefers-reduced-motion: reduce)",
       ).matches;
       window.scrollTo({ top, behavior: reduce ? "auto" : "smooth" });
     }, 150);
@@ -77,7 +77,7 @@ const Commit: React.FC<CommitProps> = ({
                       date,
                       message,
                     }: any,
-                    index: number
+                    index: number,
                   ) => {
                     return (
                       <motion.li
@@ -142,7 +142,7 @@ const Commit: React.FC<CommitProps> = ({
                         </div>
                       </motion.li>
                     );
-                  }
+                  },
                 )}
               </ol>
             </div>

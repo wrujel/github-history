@@ -6,11 +6,11 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "dev": "concurrently -k -n backend,frontend -c blue,green \"npm:dev:backend\" \"npm:dev:frontend\"",
-    "dev:backend": "npm --prefix backend run start:dev",
-    "dev:frontend": "npm --prefix frontend run dev"
+    "dev": "concurrently -k -n backend,frontend -c blue,green \"pnpm:dev:backend\" \"pnpm:dev:frontend\"",
+    "dev:backend": "pnpm --dir backend run start:dev",
+    "dev:frontend": "pnpm --dir frontend run dev"
   },
   "devDependencies": {
-    "concurrently": "^9.0.1"
+    "concurrently": "^10.0.5"
   }
 }
