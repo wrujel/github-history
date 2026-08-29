@@ -1,0 +1,127 @@
+# Dependency vulnerabilities, reported back to the Content Studio.
+#
+# The studio's scheduler dispatches this MONTHLY (and on demand), waits for the
+# run, and reads the MONITOR_AUDIT line below into the project's "Deps" tag and
+# the Monitoring dashboard's advisories list. Nothing is committed here, no
+# secret is needed, and — unlike coverage — no badge is published.
+#
+# This repo carries THREE independent pnpm projects (root tooling, backend,
+# frontend), each with its own lockfile, so all three are audited and folded
+# into the one sentinel line the contract allows.
+#
+# The audit command must NOT fail this workflow when vulnerabilities exist
+# (report, don't gate) — a red run means the tooling itself broke.
+name: Audit
+
+on:
+  workflow_dispatch: # the studio's scheduler is the only trigger
+
+concurrency:
+  group: audit-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Dependency audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Version comes from the root package.json "packageManager" pin —
+      # specifying it here too makes the action fail with a version conflict.
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      # Lockfile-only: no `pnpm install` anywhere below. `pnpm audit` resolves
+      # against pnpm-lock.yaml and asks the registry, which keeps this run to a
+      # couple of minutes — comfortably inside the studio's poll budget.
+      #
+      # `|| true` is load-bearing on every one of them: pnpm audit exits 1 when
+      # vulnerabilities exist, which is the normal case being reported.
+      - name: Audit root
+        run: pnpm audit --json > audit-root.json || true
+
+      - name: Audit backend
+        run: pnpm --dir backend audit --json > audit-backend.json || true
+
+      - name: Audit frontend
+        run: pnpm --dir frontend audit --json > audit-frontend.json || true
+
+      # `always()`: a failing audit step still wrote what it wrote.
+      #
+      # A missing or unreadable report emits NOTHING (the studio then reads
+      # "No report") rather than zeros — and here that is all-or-nothing across
+      # the three manifests, because a sentinel covering two of them would
+      # understate the repo just as badly as a fabricated clean bill.
+      #
+      # `::notice::` rather than a bare echo so the line survives as a run
+      # annotation after the log expires — the studio falls back to reading it
+      # that way.
+      - name: Report to the studio
+        if: always()
+        run: |
+          node -e '
+            const fs = require("fs");
+            const REPORTS = [
+              ["root", "audit-root.json"],
+              ["backend", "audit-backend.json"],
+              ["frontend", "audit-frontend.json"],
+            ];
+            const counts = { critical: 0, high: 0, moderate: 0, low: 0 };
+            const advisories = [];
+            const seen = new Set();
+            let complete = true;
+            for (const [name, file] of REPORTS) {
+              let report = null;
+              try {
+                report = JSON.parse(fs.readFileSync(file, "utf8"));
+              } catch {
+                console.log("::warning::" + name + ": audit report missing or unreadable");
+                complete = false;
+                continue;
+              }
+              if (!report || !report.metadata || !report.metadata.vulnerabilities) {
+                console.log("::warning::" + name + ": audit report carries no vulnerability metadata");
+                complete = false;
+                continue;
+              }
+              // Counts come from the advisories themselves, not from
+              // metadata.vulnerabilities: that field counts advisories per
+              // project, so summing it would double-count anything the three
+              // lockfiles share.
+              for (const adv of Object.values(report.advisories || {})) {
+                const key = (adv.github_advisory_id || adv.id) + "|" + adv.module_name;
+                if (seen.has(key)) continue;
+                seen.add(key);
+                const severity = String(adv.severity || "unknown").toLowerCase();
+                if (severity === "critical") counts.critical++;
+                else if (severity === "high") counts.high++;
+                else if (severity === "low" || severity === "info") counts.low++;
+                else counts.moderate++; // moderate, medium, unknown — amber, never silently green
+                advisories.push({
+                  ...(adv.github_advisory_id ? { id: String(adv.github_advisory_id) } : {}),
+                  package: String(adv.module_name),
+                  severity,
+                  ...(adv.title ? { title: String(adv.title).slice(0, 200) } : {}),
+                  ...(adv.url ? { url: String(adv.url) } : {}),
+                });
+              }
+            }
+            if (!complete) {
+              console.log("::warning::incomplete audit across the three manifests — emitting no sentinel");
+              process.exit(0);
+            }
+            // Worst first, so the 20-entry cap keeps what matters; the run URL
+            // is the full list.
+            const rank = { critical: 0, high: 1, moderate: 2, low: 3 };
+            advisories.sort((a, b) => (rank[a.severity] ?? 2) - (rank[b.severity] ?? 2));
+            const total = counts.critical + counts.high + counts.moderate + counts.low;
+            const out = { v: 1, counts, total, advisories: advisories.slice(0, 20) };
+            console.log("::notice title=audit::MONITOR_AUDIT " + JSON.stringify(out));
+          '
