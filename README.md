@@ -11,7 +11,7 @@
   <a href='/'>
     <img
       src='screenshot.webp'
-      alt='Screenshot of the app'
+      alt='GitHub History app with a Github History, visualized hero, username, repository and branch selectors, and a timeline of commit cards with SHA badges.'
       width='100%'
     />
   </a>
@@ -39,7 +39,7 @@
 </div>
 
 <div align='center'>
-  A web app to browse the commit history of any GitHub user's repositories. Built with Next.js on the frontend and NestJS on the backend, it fetches data from the GitHub API and displays commits with author info, messages, and relative timestamps.
+  A web app for browsing the commit history of any GitHub user's repositories. Search users with debounced input, pick a repository and branch, and read commits with author, message and relative timestamps on a scroll-linked, motion-driven timeline. A Next.js frontend pairs with a NestJS backend that proxies the GitHub API and documents every route with Swagger.
 
 [Demo][demo-link] · [Report issue](/issues) · [Suggest something](/issues)
 
