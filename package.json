@@ -12,6 +12,6 @@
     "dev:frontend": "pnpm --dir frontend run dev"
   },
   "devDependencies": {
-    "concurrently": "^10.0.5"
+    "concurrently": "^10.0.6"
   }
 }

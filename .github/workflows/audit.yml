@@ -27,6 +27,15 @@ jobs:
   audit:
     name: Dependency audit
     runs-on: ubuntu-latest
+    # GHSA ids left out of the report, comma-separated. Only advisories with
+    # no patched release belong here, each with its reason and exit condition:
+    #   GHSA-vfj7-8cjw-p6xm  braces <=3.0.3 has no patched release (checked
+    #     2026-10-20). Reached only through the frontend's lint toolchain:
+    #     eslint-config-next > @next/eslint-plugin-next > fast-glob 3.3.1
+    #     (pinned) > micromatch. Remove once braces 3.0.4 ships and the
+    #     lockfile is refreshed.
+    env:
+      AUDIT_IGNORE: GHSA-vfj7-8cjw-p6xm
     steps:
       - uses: actions/checkout@v7
 
@@ -73,8 +82,15 @@ jobs:
               ["backend", "audit-backend.json"],
               ["frontend", "audit-frontend.json"],
             ];
+            const ignore = new Set(
+              String(process.env.AUDIT_IGNORE || "")
+                .split(/[\s,]+/)
+                .filter(Boolean)
+                .map((id) => id.toUpperCase()),
+            );
             const counts = { critical: 0, high: 0, moderate: 0, low: 0 };
             const advisories = [];
+            const ignored = new Set();
             const seen = new Set();
             let complete = true;
             for (const [name, file] of REPORTS) {
@@ -96,6 +112,11 @@ jobs:
               // project, so summing it would double-count anything the three
               // lockfiles share.
               for (const adv of Object.values(report.advisories || {})) {
+                const ghsa = String(adv.github_advisory_id || "");
+                if (ignore.has(ghsa.toUpperCase())) {
+                  ignored.add(ghsa);
+                  continue;
+                }
                 const key = (adv.github_advisory_id || adv.id) + "|" + adv.module_name;
                 if (seen.has(key)) continue;
                 seen.add(key);
@@ -122,6 +143,12 @@ jobs:
             const rank = { critical: 0, high: 1, moderate: 2, low: 3 };
             advisories.sort((a, b) => (rank[a.severity] ?? 2) - (rank[b.severity] ?? 2));
             const total = counts.critical + counts.high + counts.moderate + counts.low;
-            const out = { v: 1, counts, total, advisories: advisories.slice(0, 20) };
+            const out = {
+              v: 1,
+              counts,
+              total,
+              advisories: advisories.slice(0, 20),
+              ...(ignored.size ? { ignored: [...ignored] } : {}),
+            };
             console.log("::notice title=audit::MONITOR_AUDIT " + JSON.stringify(out));
           '
